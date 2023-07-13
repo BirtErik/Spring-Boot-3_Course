@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class DemoController {
     private Coach myCoach;
 
-    @Autowired //Injects the dependency/if one constructor not needed
-    public DemoController(Coach theCoach){
+    @Autowired
+    public void setCoach(Coach theCoach){
         myCoach = theCoach;
     }
 
