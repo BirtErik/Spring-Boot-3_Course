@@ -22,5 +22,10 @@ public class StudentDAOImpl implements StudentDAO{
         entityManager.persist(theStudent);
     }
 
+    @Override //No need for @Transactional because with this we are only doing a query.
+    public Student findById(Integer id) {
+        return entityManager.find(Student.class, id);
+    }
+
 
 }
