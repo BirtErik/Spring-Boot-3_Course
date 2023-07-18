@@ -18,22 +18,9 @@ public class CruddemoApplication {
 	@Bean
 	public CommandLineRunner commandLineRunner(StudentDAO studentDAO){
 		return runner -> {
-			queryForStudents(studentDAO);
+			deleteAllStudents(studentDAO);
 		};
 	}
-
-	private void queryForStudents(StudentDAO studentDAO) {
-		List<Student> studentList = studentDAO.findAll();
-		for (Student tempStudent : studentList) {
-			System.out.println(tempStudent);
-		}
-	}
-
-	private void queryForStudentLastName(StudentDAO studentDAO, String lastName) {
-		Student studentList = studentDAO.findByLastName(lastName);
-		System.out.println(studentList);
-	}
-
 
 	private void createMultipleStudents(StudentDAO studentDAO){
 		System.out.println("Creating 3 student objects...");
@@ -61,7 +48,7 @@ public class CruddemoApplication {
 		System.out.println("Creating a new student...");
 		Student tempStudent = new Student("Rea", "Ban", "Rea.ban@gmail.com");
 
-		System.out.println("Saving the studnet...");
+		System.out.println("Saving the student...");
 		studentDAO.save(tempStudent);
 
 		System.out.println("Saved tempStudent generated id: " + tempStudent.getId());
@@ -69,11 +56,42 @@ public class CruddemoApplication {
 
 		System.out.println("Found the student: " + myStudent);
 	}
+	private void queryForStudents(StudentDAO studentDAO) {
+		List<Student> studentList = studentDAO.findAll();
+		for (Student tempStudent : studentList) {
+			System.out.println(tempStudent);
+		}
+	}
+
+	private void queryForStudentLastName(StudentDAO studentDAO, String lastName) {
+		List<Student> studentList = studentDAO.findByLastName(lastName);
+		for (Student tempStudent : studentList) {
+			System.out.println(tempStudent);
+		}
+	}
+
+	private void updateStudent(StudentDAO studentDAO, int id, String firstName){
+		System.out.println("Getting student with ID: " + id);
+		Student myStudent = studentDAO.findById(id);
+
+		System.out.println("Updating student");
+		myStudent.setFirstName(firstName);
+		studentDAO.update(myStudent);
+		System.out.println("Updated student: " + myStudent);
+	}
+
+	private void deleteStudent(StudentDAO studentDAO, int id){
+		System.out.println("Deleting student with ID: " + id);
+		studentDAO.delete(id);
+	}
+
+	private void deleteAllStudents(StudentDAO studentDAO){
+		System.out.println("Deleting all students\n");
+		int numRows = studentDAO.deleteAll();
+		System.out.println("Delete row count: " + numRows);
+	}
+
 }
-
-
-
-
 
 
 
