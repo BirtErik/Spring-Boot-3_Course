@@ -6,6 +6,9 @@ import java.util.List;
 
 public interface EmployeeDAO {
     List<Employee> findAll();
-    //Employee findOne(int id);
+    Employee findById(int id);
+    Employee save(Employee employee);
+    void delete(int id);
+
 
 }
