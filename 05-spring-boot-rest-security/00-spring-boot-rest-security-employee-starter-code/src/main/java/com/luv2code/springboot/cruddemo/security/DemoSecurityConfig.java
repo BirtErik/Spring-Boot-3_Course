@@ -15,11 +15,21 @@ import javax.sql.DataSource;
 public class DemoSecurityConfig {
 
     //Add support for JDBC
+    //bcrypt and noop both work with this code. It reads the {bcrypt} in database
+    // and with this id it determents what to use
     @Bean
     public UserDetailsManager userDetailsManager(DataSource dataSource){
 
-        //Tells Spring Security to use JDBC  authentication with our data source
-        return new JdbcUserDetailsManager(dataSource);
+        JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
+        //We added code for costume table names. Here we are not using default JDBC db schemas
+        //This is standard SQL, "?" is a placeholder for the value
+        jdbcUserDetailsManager.setUsersByUsernameQuery(
+                "Select user_id, pw, active from members where user_id=?");
+
+        jdbcUserDetailsManager.setAuthoritiesByUsernameQuery(
+                "Select user_id, role from roles where user_id=?");
+
+        return jdbcUserDetailsManager;
     }
 
     @Bean
